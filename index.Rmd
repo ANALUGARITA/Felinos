@@ -79,7 +79,7 @@ datatable()
 
 ```
 
-#Graficos
+## Graficos
 ```{r graf}
 felidae %>%
   st_drop_geometry() %>%
@@ -95,7 +95,7 @@ felidae %>%
 
 ```
 
-#Graficos-Historicos
+## Graficos-Historicos
 ```{r grafhisto, warning=FALSE}
 felidae %>%
   st_drop_geometry() %>%
@@ -110,6 +110,37 @@ felidae %>%
          xaxis = list(title = "Año"),
          yaxis = list(title = "Cantidad de registros"))
 
+```
+
+
+## Raster 
+
+
+```{r}
+# Conversión del objeto altitud a la clase RasterLayer
+altitud_rl <- raster::raster(altitud)
+
+# Mapa leaflet básico con capas de provincias y registros de presencia de felinos
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(
+    altitud_rl, 
+    opacity = 0.6
+  ) %>%    
+  addPolygons(
+    data = provincias,
+    color = "black",
+    fillColor = "transparent",
+    stroke = TRUE,
+    weight = 1.0,
+  ) %>%
+  addCircleMarkers(
+    data = felidae,
+    stroke = F,
+    radius = 4,
+    fillColor = 'orange',
+    fillOpacity = 1
+  )
 ```
 
 
